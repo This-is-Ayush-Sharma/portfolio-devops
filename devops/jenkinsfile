@@ -1,12 +1,21 @@
 pipeline {
     agent any
 
+    triggers {
+        // Poll SCM every minute
+        pollSCM('*/1 * * * *')
+    }
+
+    environment {
+        PORT = 3000
+    }
+
     stages {
         stage('Checkout'){
             steps{
                 script {
                     // Clone the Git repository's master branch
-                    def gitRepoUrl = 'ripo-url'
+                    def gitRepoUrl = 'https://github.com/This-is-Ayush-Sharma/portfolio-devops.git'
 
                     checkout([$class: 'GitSCM', 
                         branches: [[name: '*/master']], 
@@ -21,19 +30,20 @@ pipeline {
             steps {
                 echo 'Building...'
                 // Your build steps here
-                
+                echo 'No Build steps found...'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing...'
                 // Your test steps here
-                echo 'No test found'
+                echo 'No test found...'
             }
         }
         stage('deploy'){
             steps:{
-
+                echo 'deploying your code!'
+                sh 'serve -s -l "$PORT"'
             }
         }
     }
