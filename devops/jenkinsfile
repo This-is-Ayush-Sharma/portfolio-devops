@@ -44,26 +44,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                script {
-                    def port = env.PORT
-                    echo "Deploying your code on port ${port}!"
-
-                    // Kill any process running on the specified port
-                    sh '''
-                    # Find the PID of the process using the specified port
-                    pid=$(lsof -t -i:${PORT})
-                    if [ -n "$pid" ]; then
-                        echo "Killing process $pid using port ${PORT}"
-                        kill -9 $pid
-                    fi
-                    '''
-            
-                    // Start the new instance
-                    sh '''
-                    nohup serve -s build -l ${PORT} > serve.log 2>&1 &
-                    disown
-                    '''
-        }
+                sh 'chmod +x ./devops/cd/deploy.sh && ./devops/cd/deploy.sh 3000'
             }
         }
     }
