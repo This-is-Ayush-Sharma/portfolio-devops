@@ -50,39 +50,40 @@ pipeline {
     }
 
     post {
-        success {
-            emailext(
-                to: '20cse147.ayushsharma@giet.edu',
-                subject: 'Build Successful: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
-                body: '''\
+    success {
+        emailext(
+            to: '20cse147.ayushsharma@giet.edu',
+            subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """\
 The build was successful!
 
-Job: ${Jenkins.JOB_NAME}
-Build Number: ${Jenkins.BUILD_NUMBER}
-Build URL: ${Jenkins.BUILD_URL}
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
 
 Best regards,
 Ayush Sharma
-'''
-            )
-        }
-        failure {
-            emailext(
-                to: '20cse147.ayushsharma@giet.edu',
-                subject: 'Build Failed: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
-                body: '''\
+"""
+        )
+    }
+    failure {
+        emailext(
+            to: '20cse147.ayushsharma@giet.edu',
+            subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """\
 The build has failed.
 
-Job: ${Jenkins.JOB_NAME}
-Build Number: ${Jenkins.BUILD_NUMBER}
-Build URL: ${Jenkins.BUILD_URL}
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
 
 Please check the console output for more details.
 
 Best regards,
 Ayush Sharma
-'''
-            )
-        }
+"""
+        )
     }
+}
+
 }
