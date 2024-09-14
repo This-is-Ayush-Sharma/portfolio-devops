@@ -1,0 +1,114 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout'){
+            steps{
+                script {
+                    // Clone the Git repository's master branch
+                    def gitRepoUrl = 'ripo-url'
+
+                    checkout([$class: 'GitSCM', 
+                        branches: [[name: '*/master']], 
+                        userRemoteConfigs: [[url: gitRepoUrl]], 
+                        extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]]
+                    ])
+                }   
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                // Your build steps here
+                
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                // Your test steps here
+                echo 'No test found'
+            }
+        }
+        stage('deploy'){
+            steps:{
+
+            }
+        }
+    }
+    post {
+        success {
+            emailext(
+                to: '20cse147.ayushsharma@giet.edu',
+                subject: 'Build Successful: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
+                body: '''\
+The build was successful!
+
+Job: ${Jenkins.JOB_NAME}
+Build Number: ${Jenkins.BUILD_NUMBER}
+Build URL: ${Jenkins.BUILD_URL}
+
+Best regards,
+Jenkins
+'''
+            )
+        }
+        failure {
+            emailext(
+                to: '20cse147.ayushsharma@giet.edu',
+                subject: 'Build Failed: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
+                body: '''\
+The build has failed.
+
+Job: ${Jenkins.JOB_NAME}
+Build Number: ${Jenkins.BUILD_NUMBER}
+Build URL: ${Jenkins.BUILD_URL}
+
+Please check the console output for more details.
+
+Best regards,
+Jenkins
+'''
+            )
+        }
+        unstable {
+            emailext(
+                to: 'recipient@example.com',
+                subject: 'Build Unstable: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
+                body: '''\
+The build is unstable.
+
+Job: ${Jenkins.JOB_NAME}
+Build Number: ${Jenkins.BUILD_NUMBER}
+Build URL: ${Jenkins.BUILD_URL}
+
+Please review the build details.
+
+Best regards,
+Ayush Sharma
+'''
+            )
+        }
+        always {
+            emailext(
+                to: 'recipient@example.com',
+                subject: 'Build Completed: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
+                body: '''\
+The build has completed.
+
+Job: ${Jenkins.JOB_NAME}
+Build Number: ${Jenkins.BUILD_NUMBER}
+Build URL: ${Jenkins.BUILD_URL}
+
+Best regards,
+Ayush Sharma
+'''
+            )
+        }
+    }
+}
+
+
+
+// biea ikoe bbyb wgis
