@@ -1,18 +1,18 @@
 pipeline {
     agent any
 
-    // triggers {
-    //     // Poll SCM every minute
-    //     pollSCM('*/1 * * * *')
-    // }
+    triggers {
+        // Poll SCM every minute
+        pollSCM('*/1 * * * *')
+    }
 
-    // environment {
-    //     PORT = 3000
-    // }
+    environment {
+        PORT = 3000
+    }
 
     stages {
-        stage('Checkout'){
-            steps{
+        stage('Checkout') {
+            steps {
                 script {
                     // Clone the Git repository's master branch
                     def gitRepoUrl = 'https://github.com/This-is-Ayush-Sharma/portfolio-devops.git'
@@ -33,6 +33,7 @@ pipeline {
                 echo 'No Build steps found...'
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Testing...'
@@ -40,13 +41,15 @@ pipeline {
                 echo 'No test found...'
             }
         }
-        stage('deploy'){
-            steps:{
-                echo 'deploying your code!'
-                sh 'serve -s'
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying your code on port ${env.PORT}!"
+                sh "serve -s -l ${env.PORT}"
             }
         }
     }
+
     post {
         success {
             emailext(
@@ -60,7 +63,7 @@ Build Number: ${Jenkins.BUILD_NUMBER}
 Build URL: ${Jenkins.BUILD_URL}
 
 Best regards,
-Jenkins
+Ayush Sharma
 '''
             )
         }
@@ -82,43 +85,5 @@ Jenkins
 '''
             )
         }
-        unstable {
-            emailext(
-                to: 'recipient@example.com',
-                subject: 'Build Unstable: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
-                body: '''\
-The build is unstable.
-
-Job: ${Jenkins.JOB_NAME}
-Build Number: ${Jenkins.BUILD_NUMBER}
-Build URL: ${Jenkins.BUILD_URL}
-
-Please review the build details.
-
-Best regards,
-Ayush Sharma
-'''
-            )
-        }
-        always {
-            emailext(
-                to: 'recipient@example.com',
-                subject: 'Build Completed: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
-                body: '''\
-The build has completed.
-
-Job: ${Jenkins.JOB_NAME}
-Build Number: ${Jenkins.BUILD_NUMBER}
-Build URL: ${Jenkins.BUILD_URL}
-
-Best regards,
-Ayush Sharma
-'''
-            )
-        }
     }
 }
-
-
-
-// biea ikoe bbyb wgis
