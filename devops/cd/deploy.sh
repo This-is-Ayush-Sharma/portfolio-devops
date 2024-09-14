@@ -6,5 +6,5 @@ if [ -n "$pid" ]; then
     kill -9 $pid
 fi
 pwd
-npx http-server -p ${1} -y &
+sudo npx http-server -p 3000 -y &
 disown
