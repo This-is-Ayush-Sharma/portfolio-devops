@@ -17,7 +17,7 @@ pipeline {
                     // Clone the Git repository's master branch
                     def gitRepoUrl = 'https://github.com/This-is-Ayush-Sharma/portfolio-devops.git'
 
-                    checkout([$class: 'GitSCM', 
+                    checkout(poll: , [$class: 'GitSCM', 
                         branches: [[name: '*/master']], 
                         userRemoteConfigs: [[url: gitRepoUrl]], 
                         extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]]
