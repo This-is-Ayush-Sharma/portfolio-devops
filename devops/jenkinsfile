@@ -1,14 +1,14 @@
 pipeline {
     agent any
 
-    triggers {
-        // Poll SCM every minute
-        pollSCM('*/1 * * * *')
-    }
+    // triggers {
+    //     // Poll SCM every minute
+    //     pollSCM('*/1 * * * *')
+    // }
 
-    environment {
-        PORT = 3000
-    }
+    // environment {
+    //     PORT = 3000
+    // }
 
     stages {
         stage('Checkout'){
@@ -43,7 +43,7 @@ pipeline {
         stage('deploy'){
             steps:{
                 echo 'deploying your code!'
-                sh 'serve -s -l "$PORT"'
+                sh 'serve -s'
             }
         }
     }
