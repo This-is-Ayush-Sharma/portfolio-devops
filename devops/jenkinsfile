@@ -53,13 +53,13 @@ pipeline {
         success {
             emailext(
                 to: '20cse147.ayushsharma@giet.edu',
-                subject: 'Build Successful: $Jenkins.JOB_NAME #$Jenkins.BUILD_NUMBER',
+                subject: 'Build Successful: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
                 body: '''\
 The build was successful!
 
-Job: $Jenkins.JOB_NAME
-Build Number: $Jenkins.BUILD_NUMBER
-Build URL: $Jenkins.BUILD_URL
+Job: ${Jenkins.JOB_NAME}
+Build Number: ${Jenkins.BUILD_NUMBER}
+Build URL: ${Jenkins.BUILD_URL}
 
 Best regards,
 Ayush Sharma
@@ -69,13 +69,13 @@ Ayush Sharma
         failure {
             emailext(
                 to: '20cse147.ayushsharma@giet.edu',
-                subject: 'Build Failed: $Jenkins.JOB_NAME #$Jenkins.BUILD_NUMBER',
+                subject: 'Build Failed: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
                 body: '''\
 The build has failed.
 
-Job: $Jenkins.JOB_NAME
-Build Number: $Jenkins.BUILD_NUMBER
-Build URL: $Jenkins.BUILD_URL
+Job: ${Jenkins.JOB_NAME}
+Build Number: ${Jenkins.BUILD_NUMBER}
+Build URL: ${Jenkins.BUILD_URL}
 
 Please check the console output for more details.
 
