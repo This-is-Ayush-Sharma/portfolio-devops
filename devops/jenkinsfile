@@ -44,8 +44,26 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo "Deploying your code on port ${env.PORT}!"
-                sh "nohup  serve -s -l ${env.PORT}"
+                script {
+                    def port = env.PORT
+                    echo "Deploying your code on port ${port}!"
+
+                    // Kill any process running on the specified port
+                    sh '''
+                    # Find the PID of the process using the specified port
+                    pid=$(lsof -t -i:${PORT})
+                    if [ -n "$pid" ]; then
+                        echo "Killing process $pid using port ${PORT}"
+                        kill -9 $pid
+                    fi
+                    '''
+            
+                    // Start the new instance
+                    sh '''
+                    nohup serve -s build -l ${PORT} > serve.log 2>&1 &
+                    disown
+                    '''
+        }
             }
         }
     }
@@ -54,13 +72,13 @@ pipeline {
         success {
             emailext(
                 to: '20cse147.ayushsharma@giet.edu',
-                subject: 'Build Successful: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
+                subject: 'Build Successful: $Jenkins.JOB_NAME #$Jenkins.BUILD_NUMBER',
                 body: '''\
 The build was successful!
 
-Job: ${Jenkins.JOB_NAME}
-Build Number: ${Jenkins.BUILD_NUMBER}
-Build URL: ${Jenkins.BUILD_URL}
+Job: $Jenkins.JOB_NAME
+Build Number: $Jenkins.BUILD_NUMBER
+Build URL: $Jenkins.BUILD_URL
 
 Best regards,
 Ayush Sharma
@@ -70,18 +88,18 @@ Ayush Sharma
         failure {
             emailext(
                 to: '20cse147.ayushsharma@giet.edu',
-                subject: 'Build Failed: ${Jenkins.JOB_NAME} #${Jenkins.BUILD_NUMBER}',
+                subject: 'Build Failed: $Jenkins.JOB_NAME #$Jenkins.BUILD_NUMBER',
                 body: '''\
 The build has failed.
 
-Job: ${Jenkins.JOB_NAME}
-Build Number: ${Jenkins.BUILD_NUMBER}
-Build URL: ${Jenkins.BUILD_URL}
+Job: $Jenkins.JOB_NAME
+Build Number: $Jenkins.BUILD_NUMBER
+Build URL: $Jenkins.BUILD_URL
 
 Please check the console output for more details.
 
 Best regards,
-Jenkins
+Ayush Sharma
 '''
             )
         }
