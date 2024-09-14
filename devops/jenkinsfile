@@ -45,7 +45,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "Deploying your code on port ${env.PORT}!"
-                sh "serve -s -l ${env.PORT}"
+                sh "nohup  serve -s -l ${env.PORT}"
             }
         }
     }
