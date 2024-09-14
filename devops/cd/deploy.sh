@@ -5,5 +5,5 @@ if [ -n "$pid" ]; then
     kill -9 $pid
 fi
 
-nohup serve -s build -l ${1} > serve.log 2>&1 &
+nohup serve -s -l ${1} > serve.log 2>&1 &
 disown
