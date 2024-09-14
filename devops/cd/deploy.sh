@@ -5,5 +5,5 @@ if [ -n "$pid" ]; then
     kill -9 $pid
 fi
 pwd
-nohup serve -s -l ${1} > serve.log 2>&1 &
+npx http-server -p 3000 -y &
 disown
