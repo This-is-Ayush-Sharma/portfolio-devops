@@ -6,5 +6,6 @@ if [ -n "$pid" ]; then
 else
     pwd
     npm install
+    ls
     pm2 start server.js
 fi
